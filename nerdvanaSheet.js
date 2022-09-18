@@ -18,7 +18,7 @@ const auth = googleSheets.auth;
 let sheets = null;
 
 let spreadsheetId = null;
-const init = async function(spreadsheet) {
+const init = async function (spreadsheet) {
     sheets = await googleSheets.instance();
     spreadsheetId = spreadsheet;
 }

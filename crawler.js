@@ -24,8 +24,12 @@ const extractRootUrl = function(taskUrl) {
 };
 
 // Returns URL to solutions for a task and a given user
-const constructSolutionsUrl = function(taskUrl, user) {
-	return `${extractRootUrl(taskUrl)}/monitor?user=${extractUsername(taskUrl, user)}&task=${extractTaskName(taskUrl)}`;
+const constructSolutionsUrl = function (taskUrl, user) {
+	let username = extractUsername(taskUrl, user);
+	if (!username)
+		throw new Error(`Failed to extract username a user.`);
+
+	return `${extractRootUrl(taskUrl)}/monitor?user=${username}&task=${extractTaskName(taskUrl)}`;
 };
 
 // Retrieves highest score from an URL
