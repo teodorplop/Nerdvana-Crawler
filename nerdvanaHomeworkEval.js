@@ -6,7 +6,7 @@ const lecturesQuestion = "Select lecture to evaluate:\n";
 const homeworksQuestion = "Select homework to evaluate:\n";
 const studentsQuestion = "Select students to evaluate:\n";
 
-const evaluate = async function(spreadsheet) {
+const evaluate = async function (spreadsheet) {
 	await nerdvanaSheet.init(spreadsheet);
 
 	const studentsInfoMap = await nerdvanaSheet.fetchStudentsInfoMap();
@@ -41,13 +41,17 @@ const evaluate = async function(spreadsheet) {
 				for (let homework of student.homeworks) {
 					homework.totalScore = 0;
 					for (let task of homework.tasks) {
-						const score = await crawler.extractScore(task.URL, studentInfo);
-						task.score = score;
-						task.solutionsURL = crawler.constructSolutionsUrl(task.URL, studentInfo);
+						try {
+							const score = await crawler.extractScore(task.URL, studentInfo);
+							task.score = score;
+							task.solutionsURL = crawler.constructSolutionsUrl(task.URL, studentInfo);
 
-						const parsedScore = parseInt(score, 10);
-						if (!isNaN(parsedScore))
-							homework.totalScore += parsedScore;
+							const parsedScore = parseInt(score, 10);
+							if (!isNaN(parsedScore))
+								homework.totalScore += parsedScore;
+						} catch (error) {
+							console.log(`[Error] Failed to extract score for ${student.name}`);
+            }
 					}
 					
 					student.totalScore += homework.totalScore;
