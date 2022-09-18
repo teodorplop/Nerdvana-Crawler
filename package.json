@@ -1,0 +1,28 @@
+{
+  "name": "nerdvanacrawler",
+  "version": "0.0.0",
+  "description": "Webcrawler built to gather results from infoarena & varena websites",
+  "main": "nerdvanaHomeworkEval.js",
+  "bin": {
+    "webcrawler-infoarena": "bin.js"
+  },
+  "author": "Teo",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "googleapis": "^88.2.0",
+    "got": "^11.8.2",
+    "html-creator": "^0.4.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+	"start": "node bin.js",
+    "build": "nexe -r views/**/*",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://manthril@bitbucket.org/manthril/nerdvanacrawler.git"
+  },
+  "homepage": "https://bitbucket.org/manthril/nerdvanacrawler#readme"
+}
