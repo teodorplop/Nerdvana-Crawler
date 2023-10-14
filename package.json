@@ -1,7 +1,7 @@
 {
   "name": "nerdvanacrawler",
   "version": "0.0.0",
-  "description": "Webcrawler built to gather results from infoarena & varena websites",
+  "description": "Webcrawler built to gather results from infoarena & nerdarena websites",
   "main": "nerdvanaHomeworkEval.js",
   "bin": {
     "webcrawler-infoarena": "bin.js"

@@ -8,10 +8,6 @@ const auth = new google.auth.GoogleAuth({
 let client = null;
 let googleSheets = null;
 
-const getAuth = function () {
-  return auth;
-}
-
 const instance = async function () {
   if (client == null) {
     client = await auth.getClient();

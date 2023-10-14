@@ -6,7 +6,7 @@ const lectureSubSheetPrefix = "Cursul";
 const homeworkSubSheetPrefix = "Temă";
 
 const nameHeader = "Nume";
-const varenaHeader = "Varena";
+const nerdarenaHeader = "Nerdarena";
 const iarenaHeader = "Infoarena";
 const totalHeader = "Total";
 const scoreHeader = "Scor";
@@ -130,13 +130,13 @@ const fetchStudentsInfoMap = async function () {
   });
   const rows = getRows.data.values;
   const nameColumnIndex = rows[0].indexOf(nameHeader);
-  const varenaColumnIndex = rows[0].indexOf(varenaHeader);
+  const nerdarenaColumnIndex = rows[0].indexOf(nerdarenaHeader);
   const iarenaColumnIndex = rows[0].indexOf(iarenaHeader);
 
   let studentsMap = {};
   for (let i = 1; i < rows.length; ++i)
     studentsMap[rows[i][nameColumnIndex]] = {
-      varena: rows[i][varenaColumnIndex],
+      nerdarena: rows[i][nerdarenaColumnIndex],
       iarena: rows[i][iarenaColumnIndex]
     };
 

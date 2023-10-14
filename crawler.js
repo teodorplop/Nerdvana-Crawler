@@ -8,7 +8,7 @@ let lastRequestTimestamp = 0;
 
 // Extracts username from user object, for task URL platform
 const extractUsername = function(taskUrl, user) {
-	return taskUrl.includes("varena") ? user.varena : user.iarena;
+	return (taskUrl.includes("varena") || taskUrl.includes("nerdarena")) ? user.nerdarena : user.iarena;
 };
 // Extracts task name from task URL
 const extractTaskName = function(taskUrl) {
