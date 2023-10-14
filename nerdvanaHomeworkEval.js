@@ -12,7 +12,7 @@ const evaluate = async function (spreadsheet) {
   const studentsInfoMap = await nerdvanaSheet.fetchStudentsInfoMap();
 
   let lectures = await nerdvanaSheet.fetchLectureSheets();
-  lectures = await inputHelper.waitForArraySelectionInput(lectures, lecturesQuestion, false);
+  lectures = await inputHelper.waitForArraySelectionInput(lectures, lecturesQuestion, true);
   if (!lectures || lectures.length === 0) {
     console.log("[Error] Invalid input.");
     return;
@@ -20,7 +20,7 @@ const evaluate = async function (spreadsheet) {
 
   for (const lecture of lectures) {
     let homeworks = await nerdvanaSheet.fetchLectureHomeworks(lecture.name);
-    if (homeworks.length > 1) {
+    if (homeworks.length > 1 && lectures.length == 1) {
       homeworks = await inputHelper.waitForArraySelectionInput(homeworks, homeworksQuestion, true);
       if (!homeworks || homeworks.length === 0) {
         console.log("[Error] Invalid input.");
@@ -29,7 +29,8 @@ const evaluate = async function (spreadsheet) {
     }
 
     let students = await nerdvanaSheet.fetchLectureStudents(lecture.name);
-    students = await inputHelper.waitForArraySelectionInput(students, studentsQuestion, true);
+    if (lectures.length == 1)
+      students = await inputHelper.waitForArraySelectionInput(students, studentsQuestion, true);
 
     for (let student of students) {
       const studentInfo = studentsInfoMap[student.name];
