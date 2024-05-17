@@ -16,6 +16,10 @@ This app can be used to evaluate algorithmic tasks from different platforms and 
 
 ## Usage
 
+### Spreadsheet template
+
+You can use this template for a quick start: [Nerdvana Crawler Template](https://docs.google.com/spreadsheets/d/1a1UavYkm0a-YGmpNm3JAvYMCHEUonKpNnOTp2qo2sNw/edit?usp=sharing).
+
 ### Spreadsheet rules
 
 Your spreadsheet should follow a few rules. If you want to change the rules, you can do so by modifying [nerdvanaGoogleSheetConfig.json](https://github.com/teodorplop/Nerdvana-Crawler/blob/main/Resources/nerdvanaGoogleSheetConfig.json).
