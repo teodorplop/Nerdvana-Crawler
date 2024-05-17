@@ -1,0 +1,18 @@
+{
+  // Students collection config
+  "students_collection_subsheet": "Studenți",
+  "student_name_column": "Nume",
+  "student_nerdarena_column": "Nerdarena",
+  "student_infoarena_column": "Infoarena",
+  "student_kilonova_column": "Kilonova",
+
+  // Homework sheet config
+  "homework_prefix": "Cursul",
+  "homework_total_column_string": "Total",
+
+  // Homework overall
+  "homework_overall_prefix": "Temă",
+  "homework_overall_score_column_string": "Scor",
+  "homework_overall_max_score_column_string": "Scor Maxim",
+  "homework_overall_percentage_column_string": "%"
+}
