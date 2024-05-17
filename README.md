@@ -58,7 +58,7 @@ The tasks needs to contain its URL, as you can see in the image above.
 
 ##### 3.c) Total
 
-You can also add the `Total` columns on your homework group. It will be populated automatically if it exists.
+Each Homework Group needs to have a `Total` column, which will be populated automatically.
 
 #### 4. Temă
 
