@@ -44,15 +44,11 @@ Any subsheet that starts with `Cursul` contains all students that participated i
 
 In a course, you can create as many homework groups as you want. For example, you may have `Mandatory Group` and `Optional Group`. 
 
-###### Important!
-
 The homework group should be in the same column as the first task of the group! The recommendation is to merge the homework group name cells together.
 
 ##### Task
 
 You can add as many tasks as you want to a homework group. You can name your tasks however you please. 
-
-###### Important!
 
 The tasks needs to contain its URL, as you can see in the image above.
 
