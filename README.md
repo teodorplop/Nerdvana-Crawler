@@ -20,13 +20,13 @@ This app can be used to evaluate algorithmic tasks from different platforms and 
 
 Your spreadsheet should follow a few rules. If you want to change the rules, you can do so by modifying [nerdvanaGoogleSheetConfig.json](https://github.com/teodorplop/Nerdvana-Crawler/blob/main/Resources/nerdvanaGoogleSheetConfig.json).
 
-#### Share spreadsheet
+#### 1. Share spreadsheet
 
 The spreadsheet should be shared with `nerdvanabot@nerdvanacrawler.iam.gserviceaccount.com` account, and permissions should be set to Editor:
 
 ![image](https://github.com/teodorplop/Nerdvana-Crawler/assets/6988474/8c7d286e-6a6f-450d-bb5e-83b2bca00416)
 
-#### Studenți
+#### 2. Studenți
 
 This subsheet needs to contain a mapping between the names of the students and their accounts on different platforms. These are the columns that can be populated:
 
@@ -34,29 +34,29 @@ This subsheet needs to contain a mapping between the names of the students and t
 
 The value from the name column is the unique identifier of a student. 
 
-#### Cursul---
+#### 3. Cursul---
 
 Any subsheet that starts with `Cursul` contains all students that participated in a course and the homeworks given to them. For example:
 
 ![image](https://github.com/teodorplop/Nerdvana-Crawler/assets/6988474/de56c103-4277-4d78-a68a-7cc1308a4039)
 
-##### Homework Group
+##### 3.a) Homework Group
 
 In a course, you can create as many homework groups as you want. For example, you may have `Mandatory Group` and `Optional Group`. 
 
 The homework group should be in the same column as the first task of the group! The recommendation is to merge the homework group name cells together.
 
-##### Task
+##### 3.b) Task
 
 You can add as many tasks as you want to a homework group. You can name your tasks however you please. 
 
 The tasks needs to contain its URL, as you can see in the image above.
 
-##### Total
+##### 3.c) Total
 
 You can also add the `Total` columns on your homework group. It will be populated automatically if it exists.
 
-#### Temă
+#### 4. Temă
 
 Any subsheet that starts with `Temă` is used to aggregate results from all Homework Task Groups that exist in the spreadsheet. This is useful to see overall statistics of the homeworks.
 
