@@ -1,23 +1,52 @@
 ﻿using NerdvanaCrawler.Code.Network;
+using NerdvanaCrawler.Code.Utils;
 using NerdvanaCrawler.Code.Utils.Extensions;
 
 namespace NerdvanaCrawler.Code.Crawler
 {
     public abstract class ArenaCrawler : NetworkClientCrawler
     {
+        private const string K_PROBLEMA = "problema/";
+
         protected abstract string ShortRootUrl { get; }
         protected abstract string RootUrl { get; }
 
         protected virtual string[] NoSolutionStrings { get; } = new[] { "nici o solutie", "nici o soluție" };
         protected virtual string[] CompileErrorStrings { get; } = new[] { "eroare de compilare" };
-        protected virtual string[] CompileOkayStrings { get; } = new[] { "evaluare completa", "evaluare completă" };
+        protected virtual string[] CompileOkayStrings { get; } = new[] { "evaluare completa:", "evaluare completă:" };
 
         public ArenaCrawler(INetworkClient networkClient) : base(networkClient) { }
 
         public override bool CanCrawl(string url) => url.Contains(ShortRootUrl);
 
-        protected override string BuildUrl(string username, string task, string taskUrl) =>
-            $"{RootUrl}/monitor?task={task}&user={username}";
+        private string ExtractTaskName(string taskUrl)
+        {
+            string taskName = string.Empty;
+
+            // Extract task name from URL
+            try
+            {
+                var index = taskUrl.IndexOf(K_PROBLEMA);
+                index += K_PROBLEMA.Length;
+
+                while (index < taskUrl.Length && char.IsLetterOrDigit(taskUrl[index]))
+                {
+                    taskName += taskUrl[index];
+                    ++index;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.LogError($"Failed to extract taskName from taskUrl={taskUrl}. Exception: {ex.Message}");
+            }
+
+            return taskName;
+        }
+
+        protected override string BuildUrl(string username, string task, string taskUrl)
+        {
+            return $"{RootUrl}/monitor?task={ExtractTaskName(taskUrl)}&user={username}";
+        }
 
         protected override FetchScoreResponse ParseScore(string content, string username, string task)
         {
