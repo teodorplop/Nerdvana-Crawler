@@ -34,11 +34,9 @@ This subsheet needs to contain a mapping between the names of the students and t
 
 The value from the name column is the unique identifier of a student. 
 
-You can change the name of the columns by modifying "Students collection config" section of [nerdvanaGoogleSheetConfig.json](https://github.com/teodorplop/Nerdvana-Crawler/blob/main/Resources/nerdvanaGoogleSheetConfig.json).
-
 #### Cursul---
 
-Any subsheet that starts with "Cursul" contains all students that participated in a course and the homeworks given to them. For example:
+Any subsheet that starts with `Cursul` contains all students that participated in a course and the homeworks given to them. For example:
 
 ![image](https://github.com/teodorplop/Nerdvana-Crawler/assets/6988474/de56c103-4277-4d78-a68a-7cc1308a4039)
 
@@ -54,10 +52,18 @@ The homework group should be in the same column as the first task of the group! 
 
 You can add as many tasks as you want to a homework group. You can name your tasks however you please. 
 
-##### Important!
+###### Important!
 
 The tasks needs to contain its URL, as you can see in the image above.
 
-#### Total
+##### Total
 
 You can also add the `Total` columns on your homework group. It will be populated automatically if it exists.
+
+#### Temă
+
+Any subsheet that starts with `Temă` is used to aggregate results from all Homework Task Groups that exist in the spreadsheet. This is useful to see overall statistics of the homeworks.
+
+For example, if you have a homework group named `Mandatory` which you used in multiple courses and you want to see the sum of all the scores your students achieved on that homework, you can create a subsheet called `Temă Mandatory`, and add your students in there:
+
+![image](https://github.com/teodorplop/Nerdvana-Crawler/assets/6988474/dba71bc0-3ca6-4132-bc6d-153a3d73e09d)
