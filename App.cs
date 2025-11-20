@@ -24,15 +24,17 @@ namespace NerdvanaCrawler
             m_GoogleSheetsService = CreateGoogleSheetsService();
             m_Sheets = await GetSheets();
 
-            await RunFlow();
+            await RunFlow(args);
         }
 
-        private async Task RunFlow()
+        private async Task RunFlow(string[] args)
         {
+            var arguments = new Arguments(args);
+            
             var menuStack = new ConsoleMenuStack();
 
             // Choose which sheet to work on
-            var chooseSheetMenu = new ChooseSheetMenu(m_Sheets);
+            var chooseSheetMenu = new ChooseSheetMenu(m_Sheets, arguments);
             menuStack.Push(chooseSheetMenu);
             var chosenSheet = await chooseSheetMenu.WaitForSelection();
 
@@ -40,18 +42,18 @@ namespace NerdvanaCrawler
             var nerdvanaSheet = new NerdvanaGoogleSheet(chosenSheet);
 
             // Choose which homework to evaluate
-            var chooseHomeworkMenu = new ChooseHomeworkMenu(nerdvanaSheet.Homeworks);
+            var chooseHomeworkMenu = new ChooseHomeworkMenu(nerdvanaSheet.Homeworks, arguments);
             menuStack.Push(chooseHomeworkMenu);
             var chosenHomeworkName = await chooseHomeworkMenu.WaitForSelection();
             var chosenHomework = await nerdvanaSheet.LoadHomework(chosenHomeworkName);
 
             // Choose which task group to evaluate
-            var chooseHomeworkTaskGroupMenu = new ChooseHomeworkTaskGroupMenu(chosenHomework.TaskGroups);
+            var chooseHomeworkTaskGroupMenu = new ChooseHomeworkTaskGroupMenu(chosenHomework.TaskGroups, arguments);
             menuStack.Push(chooseHomeworkTaskGroupMenu);
             var chosenTaskGroups = await chooseHomeworkTaskGroupMenu.WaitForSelection();
 
             // Choose which students to evaluate
-            var chooseStudentsMenu = new ChooseHomeworkStudentsMenu(chosenHomework.Students);
+            var chooseStudentsMenu = new ChooseHomeworkStudentsMenu(chosenHomework.Students, arguments);
             menuStack.Push(chooseStudentsMenu);
             var chosenStudents = await chooseStudentsMenu.WaitForSelection();
 

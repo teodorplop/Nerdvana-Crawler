@@ -7,6 +7,6 @@ namespace NerdvanaCrawler.Code.Nerdvana.UI
     {
         protected override string Title => "Choose task group to evaluate";
 
-        public ChooseHomeworkTaskGroupMenu(IReadOnlyList<NerdvanaHomeworkTaskGroup> homeworks) : base(homeworks) { }
+        public ChooseHomeworkTaskGroupMenu(IReadOnlyList<NerdvanaHomeworkTaskGroup> homeworks, Arguments args) : base(homeworks) { }
     }
 }

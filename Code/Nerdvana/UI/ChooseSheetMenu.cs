@@ -7,6 +7,6 @@ namespace NerdvanaCrawler.Code.Nerdvana.UI
     {
         protected override string Title => "Choose sheet to work on";
 
-        public ChooseSheetMenu(IReadOnlyList<IGoogleSheet> sheets) : base(sheets) { }
+        public ChooseSheetMenu(IReadOnlyList<IGoogleSheet> sheets, Arguments args) : base(sheets) { }
     }
 }

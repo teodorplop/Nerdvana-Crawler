@@ -7,6 +7,6 @@ namespace NerdvanaCrawler.Code.Nerdvana.UI
     {
         protected override string Title => "Choose students to evaluate";
 
-        public ChooseHomeworkStudentsMenu(IReadOnlyList<NerdvanaHomeworkStudent> students) : base(students) { }
+        public ChooseHomeworkStudentsMenu(IReadOnlyList<NerdvanaHomeworkStudent> students, Arguments args) : base(students) { }
     }
 }
