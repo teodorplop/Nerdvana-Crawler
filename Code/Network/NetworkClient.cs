@@ -9,7 +9,7 @@ namespace NerdvanaCrawler.Code.Network
         public NetworkClient()
         {
             m_HttpClient = new HttpClient();
-            m_HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Infoarena-Monitor/1.0 (Contact: your-email@example.com)")
+            m_HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Infoarena-Monitor/1.0 (Contact: your-email@example.com)");
         }
 
         public async Task<NetworkResponse> Get(string url)
