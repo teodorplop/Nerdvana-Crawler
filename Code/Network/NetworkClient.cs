@@ -4,12 +4,14 @@ namespace NerdvanaCrawler.Code.Network
 {
     public class NetworkClient : INetworkClient
     {
+        private const string K_USER_AGENT = "Infoarena-Monitor/1.0 (Contact: your-email@example.com)";
+        
         private HttpClient m_HttpClient;
 
         public NetworkClient()
         {
             m_HttpClient = new HttpClient();
-            m_HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Infoarena-Monitor/1.0 (Contact: your-email@example.com)");
+            m_HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(K_USER_AGENT);
         }
 
         public async Task<NetworkResponse> Get(string url)
