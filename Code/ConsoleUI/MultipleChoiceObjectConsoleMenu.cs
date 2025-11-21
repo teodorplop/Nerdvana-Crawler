@@ -34,11 +34,11 @@
             base.Enable();
         }
 
-        private void ChooseAllObjects()
+        protected void ChooseAllObjects()
         {
             m_TaskCompletion.SetResult(m_Objects);
         }
-        private void ChooseObject(TObject obj)
+        protected void ChooseObject(TObject obj)
         {
             m_TaskCompletion.SetResult(new[] {obj});
         }
