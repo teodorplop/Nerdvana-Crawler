@@ -1,6 +1,8 @@
 ﻿name: Daily Weekly Runner - Clasa a 9-a - 2025-2026
 
 on:
+  workflow_dispatch:
+  
   schedule:
     - cron: '00 18 * * 2'
 
