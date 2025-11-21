@@ -2,6 +2,27 @@
 
 on:
   workflow_dispatch:
+    inputs:
+      sheet:
+        description: 'Sheet ID'
+        type: string
+        required: true
+        default: '1hlZ1XwmkU3X7EHZ_rU_6bHD9-zEGWXi7Jt-goEIlFto'
+      homework:
+        description: 'Homework'
+        type: string
+        required: true
+        default: 'last'
+      taskgroup:
+        description: 'Task Group'
+        type: string
+        required: true
+        default: 'all'
+      student:
+        description: 'Student'
+        type: string
+        required: true
+        default: 'all'
   
   schedule:
     - cron: '00 18 * * 2'
@@ -23,4 +44,4 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Run the compiled application with arguments
-        run: dotnet run --project NerdvanaCrawler.csproj -- -sheet "1hlZ1XwmkU3X7EHZ_rU_6bHD9-zEGWXi7Jt-goEIlFto" -homework "last" -taskgroup "all" -student "all"
+        run: dotnet run --project NerdvanaCrawler.csproj -- -sheet $sheet -homework $homework -taskgroup $taskgroup -student $student
