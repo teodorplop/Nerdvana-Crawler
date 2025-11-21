@@ -1,0 +1,24 @@
+﻿name: Daily Weekly Runner - Clasa a 9-a - 2025-2026
+
+on:
+  schedule:
+    - cron: '00 18 * * 2'
+
+jobs:
+  build_and_run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build the C# project
+        run: dotnet build --configuration Release
+
+      - name: Run the compiled application with arguments
+        run: dotnet run --project NerdvanaCrawler.csproj -- -sheet "1hlZ1XwmkU3X7EHZ_rU_6bHD9-zEGWXi7Jt-goEIlFto" -homework "last" -taskGroup "all" -student "all"

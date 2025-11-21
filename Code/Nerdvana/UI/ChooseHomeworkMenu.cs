@@ -12,6 +12,9 @@ namespace NerdvanaCrawler.Code.Nerdvana.UI
         
         private static IReadOnlyList<string> FilterHomeworksFromArgs(IReadOnlyList<string> homeworks, Arguments args)
         {
+            if (args.LastHomework)
+                return [homeworks.Last()];
+            
             if (string.IsNullOrEmpty(args.HomeworkName))
                 return homeworks;
 

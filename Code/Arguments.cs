@@ -5,6 +5,7 @@ namespace NerdvanaCrawler.Code
         private const string K_SHEET_ARG = "-sheet";
         
         private const string K_HOMEWORK_ARG = "-homework";
+        private const string K_LAST_HOMEWORK = "last";
         
         private const string K_HOMEWORK_TASK_GROUP_ARG = "-taskgroup";
         private const string K_ALL_HOMEWORK_TASK_GROUPS = "all";
@@ -14,6 +15,7 @@ namespace NerdvanaCrawler.Code
         
         public string SheetId { get; }
         
+        public bool LastHomework => HomeworkName == K_LAST_HOMEWORK;
         public string HomeworkName { get; }
         
         public bool AllTaskGroups => TaskGroupName == K_ALL_HOMEWORK_TASK_GROUPS;
