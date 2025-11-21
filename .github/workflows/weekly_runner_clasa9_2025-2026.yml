@@ -44,4 +44,10 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Run the compiled application with arguments
-        run: dotnet run --project NerdvanaCrawler.csproj -- -sheet $SHEET -homework $HOMEWORK -taskgroup $TASKGROUP -student $STUDENT
+        run: |
+          SHEET="${{ github.event.inputs.sheet || '1hlZ1XwmkU3X7EHZ_rU_6bHD9-zEGWXi7Jt-goEIlFto' }}"
+          HOMEWORK="${{ github.event.inputs.homework || 'last' }}"
+          TASKGROUP="${{ github.event.inputs.taskgroup || 'all' }}"
+          STUDENT="${{ github.event.inputs.student || 'all' }}"
+          
+          dotnet run --project NerdvanaCrawler.csproj -- -sheet "$SHEET" -homework "$HOMEWORK" -taskgroup "$TASKGROUP" -student "$STUDENT"
