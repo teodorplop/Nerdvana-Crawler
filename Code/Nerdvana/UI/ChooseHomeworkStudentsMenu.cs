@@ -31,5 +31,7 @@ namespace NerdvanaCrawler.Code.Nerdvana.UI
             else if (m_ArgsStudent.HasValue)
                 ChooseObject(m_ArgsStudent.Value);
         }
+        
+        protected override void WaitForInput() { }
     }
 }

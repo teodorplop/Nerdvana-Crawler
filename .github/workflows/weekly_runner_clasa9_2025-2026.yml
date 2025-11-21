@@ -23,4 +23,4 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Run the compiled application with arguments
-        run: dotnet run --project NerdvanaCrawler.csproj -- -sheet "1hlZ1XwmkU3X7EHZ_rU_6bHD9-zEGWXi7Jt-goEIlFto" -homework "last" -taskGroup "all" -student "all"
+        run: dotnet run --project NerdvanaCrawler.csproj -- -sheet "1hlZ1XwmkU3X7EHZ_rU_6bHD9-zEGWXi7Jt-goEIlFto" -homework "last" -taskgroup "all" -student "all"

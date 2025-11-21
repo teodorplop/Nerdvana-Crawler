@@ -81,7 +81,7 @@ namespace NerdvanaCrawler.Code.ConsoleUI
                 Label($"{i}. {m_Actions[i].Message}", EAlignment.Left);
         }
 
-        private void WaitForInput()
+        protected virtual void WaitForInput()
         {
             if (m_AutoPlaySingleAction && m_Actions.Count == 1)
             {

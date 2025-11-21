@@ -31,5 +31,7 @@ namespace NerdvanaCrawler.Code.Nerdvana.UI
             else if (m_ArgsTaskGroup != null)
                 ChooseObject(m_ArgsTaskGroup);
         }
+
+        protected override void WaitForInput() { }
     }
 }
