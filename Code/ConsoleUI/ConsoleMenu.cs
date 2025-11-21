@@ -17,12 +17,22 @@ namespace NerdvanaCrawler.Code.ConsoleUI
 
         private const string K_SELECT_OPTION_STRING = "Please input one of the following:";
 
+        private bool m_AutoPlaySingleAction;
         private List<ConsoleInputAction> m_Actions;
 
         protected abstract string Title { get; }
 
-        protected ConsoleMenu(params ConsoleInputAction[] actions) => SetActions(actions);
-        protected ConsoleMenu(IReadOnlyList<ConsoleInputAction> actions) => SetActions(actions);
+        protected ConsoleMenu(bool autoPlaySingleAction, params ConsoleInputAction[] actions)
+        {
+            m_AutoPlaySingleAction = autoPlaySingleAction;
+            SetActions(actions);
+        }
+
+        protected ConsoleMenu(IReadOnlyList<ConsoleInputAction> actions, bool autoPlaySingleAction)
+        {
+            m_AutoPlaySingleAction = autoPlaySingleAction;
+            SetActions(actions);
+        }
 
         private void SetActions(IReadOnlyList<ConsoleInputAction> actions)
         {
@@ -73,6 +83,12 @@ namespace NerdvanaCrawler.Code.ConsoleUI
 
         private void WaitForInput()
         {
+            if (m_AutoPlaySingleAction && m_Actions.Count == 1)
+            {
+                m_Actions[0].Action?.Invoke();
+                return;
+            }
+            
             int selectedIndex;
             do
             {

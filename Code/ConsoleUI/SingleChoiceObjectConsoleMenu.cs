@@ -4,11 +4,15 @@
     {
         private TaskCompletionSource<TObject> m_TaskCompletion;
 
-        public SingleChoiceObjectConsoleMenu(params TObject[] objects) : base() =>
+        public SingleChoiceObjectConsoleMenu(bool autoChooseSingleObject, params TObject[] objects) : base(autoChooseSingleObject)
+        {
             AddObjects(objects);
+        }
 
-        public SingleChoiceObjectConsoleMenu(IReadOnlyList<TObject> objects) : base() =>
+        public SingleChoiceObjectConsoleMenu(IReadOnlyList<TObject> objects, bool autoChooseSingleObject) : base(autoChooseSingleObject)
+        {
             AddObjects(objects);
+        }
 
         private void AddObjects(IReadOnlyList<TObject> objects)
         {

@@ -7,10 +7,10 @@
         private IReadOnlyList<TObject> m_Objects;
         private TaskCompletionSource<IReadOnlyList<TObject>> m_TaskCompletion;
 
-        public MultipleChoiceObjectConsoleMenu(params TObject[] objects) : base() =>
+        public MultipleChoiceObjectConsoleMenu(params TObject[] objects) : base(false) =>
             AddObjects(objects);
 
-        public MultipleChoiceObjectConsoleMenu(IReadOnlyList<TObject> objects) : base() =>
+        public MultipleChoiceObjectConsoleMenu(IReadOnlyList<TObject> objects) : base(false) =>
             AddObjects(objects);
 
         private void AddObjects(IReadOnlyList<TObject> objects)
