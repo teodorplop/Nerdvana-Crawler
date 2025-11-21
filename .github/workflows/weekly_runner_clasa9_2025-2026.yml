@@ -44,4 +44,4 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Run the compiled application with arguments
-        run: dotnet run --project NerdvanaCrawler.csproj -- -sheet $sheet -homework $homework -taskgroup $taskgroup -student $student
+        run: dotnet run --project NerdvanaCrawler.csproj -- -sheet $SHEET -homework $HOMEWORK -taskgroup $TASKGROUP -student $STUDENT
