@@ -45,7 +45,7 @@ jobs:
 
       - name: Run the compiled application with arguments
         run: |
-          SHEET="${{ github.event.inputs.sheet || '1hlZ1XwmkU3X7EHZ_rU_6bHD9-zEGWXi7Jt-goEIlFto' }}"
+          SHEET="${{ github.event.inputs.sheet || '1nIxkE2VYuQOSBIf9ZZF7KMTmayrBRhbeWFHr4OjxBNQ' }}"
           HOMEWORK="${{ github.event.inputs.homework || 'last' }}"
           TASKGROUP="${{ github.event.inputs.taskgroup || 'all' }}"
           STUDENT="${{ github.event.inputs.student || 'all' }}"
