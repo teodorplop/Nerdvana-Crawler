@@ -16,7 +16,7 @@ namespace NerdvanaCrawler.Code.Nerdvana.UI
             if (string.IsNullOrEmpty(args.SheetId))
                 return sheets;
 
-            var sheetIndex = sheets.FindIndex(sheet => sheet.ToString() == args.SheetId);
+            var sheetIndex = sheets.FindIndex(sheet => sheet.Id == args.SheetId || sheet.Title == args.SheetId);
             if (sheetIndex == -1)
             {
                 typeof(ChooseSheetMenu).LogError("Invalid sheet id argument.");

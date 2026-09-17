@@ -92,15 +92,13 @@ namespace NerdvanaCrawler.Code.ConsoleUI
             int selectedIndex;
             do
             {
-                try
+                var input = Console.ReadLine();
+                if (input == null)
+                    throw new InvalidOperationException($"{Title}: no console input available. Pass command line arguments to select an option when running without a console.");
+
+                if (!int.TryParse(input, out selectedIndex) || selectedIndex < 0 || selectedIndex >= m_Actions.Count)
                 {
-                    selectedIndex = int.Parse(Console.ReadLine());
-                    if (selectedIndex < 0 || selectedIndex >= m_Actions.Count)
-                        throw new IndexOutOfRangeException();
-                }
-                catch (Exception ex)
-                {
-                    this.LogError($"Failed to parse input: {ex.Message}");
+                    this.LogError($"Failed to parse input: expected a number between 0 and {m_Actions.Count - 1}, got '{input}'.");
                     selectedIndex = -1;
                 }
             } while (selectedIndex == -1);

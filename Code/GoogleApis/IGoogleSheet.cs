@@ -4,6 +4,7 @@ namespace NerdvanaCrawler.Code.GoogleApis
 {
     public interface IGoogleSheet
     {
+        string Id { get; }
         string Title { get; }
         IReadOnlyList<string> Subsheets { get; }
 
@@ -17,6 +18,7 @@ namespace NerdvanaCrawler.Code.GoogleApis
     {
         public static IGoogleSheet Instance { get; } = new NullGoogleSheet();
 
+        public string Id => string.Empty;
         public string Title => "Null";
         public IReadOnlyList<string> Subsheets => Array.Empty<string>();
 
