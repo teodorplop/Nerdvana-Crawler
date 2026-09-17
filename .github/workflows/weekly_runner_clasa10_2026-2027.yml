@@ -1,0 +1,53 @@
+﻿name: Weekly Homework Eval - Clasa a 9-a - 2025-2026
+
+on:
+  workflow_dispatch:
+    inputs:
+      sheet:
+        description: 'Sheet ID'
+        type: string
+        required: true
+        default: '1nIxkE2VYuQOSBIf9ZZF7KMTmayrBRhbeWFHr4OjxBNQ'
+      homework:
+        description: 'Homework'
+        type: string
+        required: true
+        default: 'last'
+      taskgroup:
+        description: 'Task Group'
+        type: string
+        required: true
+        default: 'all'
+      student:
+        description: 'Student'
+        type: string
+        required: true
+        default: 'all'
+  
+  schedule:
+    - cron: '00 18 * * 2'
+
+jobs:
+  build_and_run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build the C# project
+        run: dotnet build --configuration Release
+
+      - name: Run the compiled application with arguments
+        run: |
+          SHEET="${{ github.event.inputs.sheet || '1hlZ1XwmkU3X7EHZ_rU_6bHD9-zEGWXi7Jt-goEIlFto' }}"
+          HOMEWORK="${{ github.event.inputs.homework || 'last' }}"
+          TASKGROUP="${{ github.event.inputs.taskgroup || 'all' }}"
+          STUDENT="${{ github.event.inputs.student || 'all' }}"
+          
+          dotnet run --project NerdvanaCrawler.csproj -- -sheet "$SHEET" -homework "$HOMEWORK" -taskgroup "$TASKGROUP" -student "$STUDENT"

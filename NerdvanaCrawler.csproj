@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include=".github\workflows\weekly_runner_clasa10_2026-2027.yml" />
     <Content Include=".github\workflows\weekly_runner_clasa9_2025-2026.yml" />
   </ItemGroup>
 
