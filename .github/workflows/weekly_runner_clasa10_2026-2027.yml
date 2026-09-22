@@ -25,7 +25,7 @@ on:
         default: 'all'
   
   schedule:
-    - cron: '00 18 * * 2'
+    - cron: '00 12 * * 3'
 
 jobs:
   build_and_run:
