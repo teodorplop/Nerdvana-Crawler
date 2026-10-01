@@ -66,12 +66,13 @@ namespace NerdvanaCrawler.Code.Nerdvana.Homework
             try
             {
                 var value = m_Data.Rows[student.Value.SheetRowIndex].Values[taskGroup.SheetTotalColumnIndex].FormattedValue;
-                score = int.Parse(value);
+                // An empty total means the task group wasn't evaluated yet.
+                score = string.IsNullOrEmpty(value) ? 0 : int.Parse(value);
             }
             catch (Exception ex)
             {
                 score = 0;
-                this.LogError($"Failed to parse total for student={studentName} and taskGroup={taskGroupName}. Exception: {ex.Message}");
+                this.LogError($"Failed to parse total for student={studentName} and taskGroup={taskGroupName} in homework={Name}. Exception: {ex.Message}");
             }
 
             return score;
