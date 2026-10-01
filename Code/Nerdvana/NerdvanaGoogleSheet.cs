@@ -102,7 +102,8 @@ namespace NerdvanaCrawler.Code.Nerdvana
                         UpdateTotalData(
                             data[result.Request.Student.SheetRowIndex - firstRow].Values[result.Request.Task.TaskGroup.SheetTotalColumnIndex - firstColumn], 
                             result.Response.Score, 
-                            result.Request.Task.TaskGroup.Tasks.Count);
+                            result.Request.Task.TaskGroup.Tasks.Count,
+                            IsTaskGroupColored(homework, result.Request.Task.TaskGroup));
                 }
 
                 data[result.Request.Student.SheetRowIndex - firstRow].Values[result.Request.Task.SheetColumnIndex - firstColumn] = ResultToSheetData(result);
@@ -165,7 +166,7 @@ namespace NerdvanaCrawler.Code.Nerdvana
                         }
                     };
 
-                    data[i].Values[homeworkOverall.PercentageColumnIndex - minColumnIndex] = UpdateTotalData(data[i].Values[2], total / tasksCount, 1);
+                    data[i].Values[homeworkOverall.PercentageColumnIndex - minColumnIndex] = UpdateTotalData(data[i].Values[2], total / tasksCount, 1, true);
                 }
 
                 await m_GoogleSheet.UpdateData(data, homeworkOverallName, GoogleSheetRange.Range(1, 1, homeworkOverall.Students.Count, 3));
@@ -197,7 +198,12 @@ namespace NerdvanaCrawler.Code.Nerdvana
             };
         }
 
-        private CellData UpdateTotalData(CellData cellData, int addScore, int tasksCount)
+        private static bool IsTaskGroupColored(NerdvanaHomework homework, NerdvanaHomeworkTaskGroup taskGroup)
+        {
+            return homework.TaskGroups.Count > 0 && homework.TaskGroups[0] == taskGroup;
+        }
+
+        private CellData UpdateTotalData(CellData cellData, int addScore, int tasksCount, bool colored)
         {
             if (cellData == null)
             {
@@ -206,19 +212,20 @@ namespace NerdvanaCrawler.Code.Nerdvana
                     UserEnteredValue = new ExtendedValue()
                     {
                         NumberValue = 0
-                    },
-                    UserEnteredFormat = new CellFormat()
-                    {
-                        BackgroundColor = new Color()
-                        {
-                            Red = 1, Alpha = 1
-                        }
                     }
                 };
             }
 
             cellData.UserEnteredValue.NumberValue += addScore;
-            cellData.UserEnteredFormat.BackgroundColor = GoogleSheetsUtils.Lerp(new Color() { Red = 1, Alpha = 1 }, new Color() { Green = 1, Alpha = 1 }, (float)cellData.UserEnteredValue.NumberValue / (tasksCount * 100));
+
+            // When not colored, the format stays null, which clears the background color in the sheet.
+            if (colored)
+            {
+                cellData.UserEnteredFormat = new CellFormat()
+                {
+                    BackgroundColor = GoogleSheetsUtils.Lerp(new Color() { Red = 1, Alpha = 1 }, new Color() { Green = 1, Alpha = 1 }, (float)cellData.UserEnteredValue.NumberValue / (tasksCount * 100))
+                };
+            }
 
             return cellData;
         }

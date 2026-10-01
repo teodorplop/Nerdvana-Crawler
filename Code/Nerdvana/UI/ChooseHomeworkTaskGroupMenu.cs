@@ -22,16 +22,14 @@ namespace NerdvanaCrawler.Code.Nerdvana.UI
             }
         }
 
-        public override void Enable()
+        protected override void WaitForInput()
         {
-            base.Enable();
-                
             if (m_AllTaskGroups)
                 ChooseAllObjects();
             else if (m_ArgsTaskGroup != null)
                 ChooseObject(m_ArgsTaskGroup);
+            else
+                base.WaitForInput();
         }
-
-        protected override void WaitForInput() { }
     }
 }
