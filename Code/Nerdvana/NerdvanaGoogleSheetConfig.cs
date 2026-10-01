@@ -16,6 +16,8 @@ namespace NerdvanaCrawler.Code.Nerdvana
         public string StudentInfoarenaColumn { get; private set; } = "Infoarena";
         [JsonProperty("student_kilonova_column")]
         public string StudentKilonovaColumn { get; private set; } = "Kilonova";
+        [JsonProperty("student_codeforces_column")]
+        public string StudentCodeforcesColumn { get; private set; } = "Codeforces";
 
 
         [JsonProperty("homework_prefix")]

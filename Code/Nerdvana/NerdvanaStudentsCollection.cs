@@ -11,6 +11,7 @@ namespace NerdvanaCrawler.Code.Nerdvana
         private static readonly string m_StudentNerdarenaColumn = NerdvanaGoogleSheetConfig.Instance.StudentNerdarenaColumn;
         private static readonly string m_StudentInfoarenaColumn = NerdvanaGoogleSheetConfig.Instance.StudentInfoarenaColumn;
         private static readonly string m_StudentKilonovaColumn = NerdvanaGoogleSheetConfig.Instance.StudentKilonovaColumn;
+        private static readonly string m_StudentCodeforcesColumn = NerdvanaGoogleSheetConfig.Instance.StudentCodeforcesColumn;
 
         public IReadOnlyList<NerdvanaStudent> Students { get; }
 
@@ -40,12 +41,13 @@ namespace NerdvanaCrawler.Code.Nerdvana
                     int nerdarenaColumnIndex = values.Rows[0].IndexOf(m_StudentNerdarenaColumn);
                     int infoarenaColumnIndex = values.Rows[0].IndexOf(m_StudentInfoarenaColumn);
                     int kilonovaColumnIndex = values.Rows[0].IndexOf(m_StudentKilonovaColumn);
+                    int codeforcesColumnIndex = values.Rows[0].IndexOf(m_StudentCodeforcesColumn);
 
                     for (int row = 1; row < values.Rows.Count; ++row)
                     {
                         try
                         {
-                            students.Add(ExtractStudent(values.Rows[row], nameColumnIndex, nerdarenaColumnIndex, infoarenaColumnIndex, kilonovaColumnIndex));
+                            students.Add(ExtractStudent(values.Rows[row], nameColumnIndex, nerdarenaColumnIndex, infoarenaColumnIndex, kilonovaColumnIndex, codeforcesColumnIndex));
                         }
                         catch (Exception ex)
                         {
@@ -66,14 +68,21 @@ namespace NerdvanaCrawler.Code.Nerdvana
             return students;
         }
 
-        private NerdvanaStudent ExtractStudent(IReadOnlyList<object> row, int nameColumnIndex, int nerdarenaColumnIndex, int infoarenaColumnIndex, int kilonovaColumnIndex)
+        private NerdvanaStudent ExtractStudent(IReadOnlyList<object> row, int nameColumnIndex, int nerdarenaColumnIndex, int infoarenaColumnIndex, int kilonovaColumnIndex, int codeforcesColumnIndex)
         {
             var name = Convert.ToString(row[nameColumnIndex]);
-            var nerdarenaUsername = nerdarenaColumnIndex < row.Count ? Convert.ToString(row[nerdarenaColumnIndex]) : null;
-            var infoarenaUsername = infoarenaColumnIndex < row.Count ? Convert.ToString(row[infoarenaColumnIndex]) : null;
-            var kilonovaUsername = kilonovaColumnIndex < row.Count ? Convert.ToString(row[kilonovaColumnIndex]) : null;
+            var nerdarenaUsername = ExtractCell(row, nerdarenaColumnIndex);
+            var infoarenaUsername = ExtractCell(row, infoarenaColumnIndex);
+            var kilonovaUsername = ExtractCell(row, kilonovaColumnIndex);
+            var codeforcesUsername = ExtractCell(row, codeforcesColumnIndex);
 
-            return new NerdvanaStudent(name, nerdarenaUsername, infoarenaUsername, kilonovaUsername);
+            return new NerdvanaStudent(name, nerdarenaUsername, infoarenaUsername, kilonovaUsername, codeforcesUsername);
+        }
+
+        // Column index is -1 when the sheet doesn't have that column at all
+        private static string ExtractCell(IReadOnlyList<object> row, int columnIndex)
+        {
+            return columnIndex >= 0 && columnIndex < row.Count ? Convert.ToString(row[columnIndex]) : null;
         }
     }
 }

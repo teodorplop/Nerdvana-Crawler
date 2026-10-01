@@ -31,7 +31,7 @@ namespace NerdvanaCrawler.Code.Crawler
                     response = new FetchScoreResponse(EFetchScoreResult.ParserError, 0);
                 }
                 else
-                    response = ParseScore(networkResponse.Content, username, taskName);
+                    response = ParseScore(networkResponse.Content, username, taskName, taskUrl);
 
                 if (response.Result == EFetchScoreResult.ParserError)
                     this.LogError($"Failed to parse score for username={username} and task={taskName}.");
@@ -53,6 +53,6 @@ namespace NerdvanaCrawler.Code.Crawler
 
         protected virtual string BuildNiceUrl(string username, string task, string taskUrl) => BuildUrl(username, task, taskUrl);
 
-        protected abstract FetchScoreResponse ParseScore(string content, string username, string task);
+        protected abstract FetchScoreResponse ParseScore(string content, string username, string task, string taskUrl);
     }
 }

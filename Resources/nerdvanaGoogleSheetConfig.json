@@ -1,9 +1,10 @@
-{
+﻿{
   "students_collection_subsheet": "Studenți",
   "student_name_column": "Nume",
   "student_nerdarena_column": "Nerdarena",
   "student_infoarena_column": "Infoarena",
   "student_kilonova_column": "Kilonova",
+  "student_codeforces_column": "Codeforces",
 
   "homework_prefix": "Cursul",
   "homework_total_column_string": "Total",

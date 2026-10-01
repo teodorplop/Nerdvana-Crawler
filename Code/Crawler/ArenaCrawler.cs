@@ -48,7 +48,7 @@ namespace NerdvanaCrawler.Code.Crawler
             return $"{RootUrl}/monitor?task={ExtractTaskName(taskUrl)}&user={username}";
         }
 
-        protected override FetchScoreResponse ParseScore(string content, string username, string task)
+        protected override FetchScoreResponse ParseScore(string content, string username, string task, string taskUrl)
         {
             var response = new FetchScoreResponse();
 

@@ -1,4 +1,4 @@
-# Nerdvana-Crawler
+﻿# Nerdvana-Crawler
 
 ## Description
 
@@ -9,6 +9,7 @@ This app can be used to evaluate algorithmic tasks from different platforms and 
 * [Infoarena](https://infoarena.ro/)
 * [Nerdarena](https://www.nerdarena.ro/)
 * [Kilonova](https://kilonova.ro/)
+* [Codeforces](https://codeforces.com/) (public problemset problems)
 
 ### Example
 

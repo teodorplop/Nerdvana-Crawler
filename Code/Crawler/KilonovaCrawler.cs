@@ -98,7 +98,7 @@ namespace NerdvanaCrawler.Code.Crawler
             return $"{K_NICE_ROOT}?problem_id={taskName}&user_id={username}";
         }
 
-        protected override FetchScoreResponse ParseScore(string content, string username, string task)
+        protected override FetchScoreResponse ParseScore(string content, string username, string task, string taskUrl)
         {
             FetchScoreResponse response;
 

@@ -8,7 +8,8 @@ namespace NerdvanaCrawler.Code.Nerdvana
     public class NerdvanaCrawlerRequestDispatcher
     {
         private static int MinDelay = NerdvanaCrawlerRequestDispatcherConfig.Instance.MinDelay;
-        private static int MaxDelay = NerdvanaCrawlerRequestDispatcherConfig.Instance.MinDelay;
+        private static int MaxDelay = NerdvanaCrawlerRequestDispatcherConfig.Instance.MaxDelay;
+        private const int CodeforcesMinDelay = 2100;
 
         private class CrawlerWrapper
         {
@@ -16,13 +17,17 @@ namespace NerdvanaCrawler.Code.Nerdvana
             private TaskQueue m_CrawlerQueue;
 
             private Func<INerdvanaStudent, string> m_ExtractUsername;
+            private int m_MinDelay;
+            private int m_MaxDelay;
 
-            public CrawlerWrapper(ICrawler crawler, Func<INerdvanaStudent, string> extractUsername)
+            public CrawlerWrapper(ICrawler crawler, Func<INerdvanaStudent, string> extractUsername, int minDelay = 0)
             {
                 m_Crawler = crawler;
                 m_CrawlerQueue = new TaskQueue();
 
                 m_ExtractUsername = extractUsername;
+                m_MinDelay = Math.Max(MinDelay, minDelay);
+                m_MaxDelay = Math.Max(MaxDelay, m_MinDelay);
             }
 
             public bool CanCrawl(string url) => m_Crawler.CanCrawl(url);
@@ -35,7 +40,7 @@ namespace NerdvanaCrawler.Code.Nerdvana
                 {
                     scoreResponse = await m_Crawler.TryFetchScore(m_ExtractUsername.Invoke(student), task.Name, task.Url);
                     if (scoreResponse.Result != EFetchScoreResult.InvalidInput)
-                        await Task.Delay(Random.Shared.Next(MinDelay, MaxDelay));
+                        await Task.Delay(Random.Shared.Next(m_MinDelay, m_MaxDelay));
                 });
 
                 return scoreResponse;
@@ -50,7 +55,9 @@ namespace NerdvanaCrawler.Code.Nerdvana
             { 
                 new CrawlerWrapper(new NerdarenaCrawler(networkClient), student => student.NerdarenaUsername),
                 new CrawlerWrapper(new InfoarenaCrawler(networkClient), student => student.InfoarenaUsername),
-                new CrawlerWrapper(new KilonovaCrawler(networkClient), student => student.KilonovaUsername)
+                new CrawlerWrapper(new KilonovaCrawler(networkClient), student => student.KilonovaUsername),
+                // Codeforces API allows at most 1 request per 2 seconds
+                new CrawlerWrapper(new CodeforcesCrawler(networkClient), student => student.CodeforcesUsername, CodeforcesMinDelay)
             };
         }
 

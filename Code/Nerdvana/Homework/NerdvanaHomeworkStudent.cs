@@ -13,6 +13,8 @@
 
         public string KilonovaUsername => Student.KilonovaUsername;
 
+        public string CodeforcesUsername => Student.CodeforcesUsername;
+
         public NerdvanaHomeworkStudent(NerdvanaStudent student, int sheetRowIndex)
         {
             Student = student;
