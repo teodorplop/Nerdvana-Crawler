@@ -189,6 +189,12 @@ namespace NerdvanaCrawler.Code.Nerdvana
                 }
 
                 await m_GoogleSheet.UpdateData(data, homeworkOverallName, GoogleSheetRange.Range(1, 1, homeworkOverall.Students.Count, 3));
+
+                // Sorts the students (entire rows) by score, highest first.
+                if (homeworkOverall.ScoreColumnIndex >= 0)
+                    await m_GoogleSheet.SortRange(homeworkOverallName, GoogleSheetRange.Rows(1, homeworkOverall.Students.Count), homeworkOverall.ScoreColumnIndex, false);
+                else
+                    this.LogError($"Failed to sort homework overall={homeworkOverallName}: missing score column.");
             }
         }
 
