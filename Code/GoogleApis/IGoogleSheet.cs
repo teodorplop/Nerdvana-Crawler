@@ -12,6 +12,7 @@ namespace NerdvanaCrawler.Code.GoogleApis
         Task<DataSheetResponse> FetchData(string subsheetName, GoogleSheetRange range);
 
         Task UpdateData(List<RowData> data, string subsheetName, GoogleSheetRange range);
+        Task SortRange(string subsheetName, GoogleSheetRange range, int sortColumn, bool ascending);
     }
 
     public sealed class NullGoogleSheet : IGoogleSheet
@@ -28,6 +29,7 @@ namespace NerdvanaCrawler.Code.GoogleApis
         public Task<DataSheetResponse> FetchData(string subsheetName, GoogleSheetRange range) => Task.FromResult(DataSheetResponse.Default);
 
         public Task UpdateData(List<RowData> data, string subsheetName, GoogleSheetRange range) => Task.CompletedTask;
+        public Task SortRange(string subsheetName, GoogleSheetRange range, int sortColumn, bool ascending) => Task.CompletedTask;
     }
 
     public static class IGoogleSheetExtensions 

@@ -9,6 +9,7 @@ namespace NerdvanaCrawler.Code.GoogleApis
         private Func<GoogleSheetGetRequest, Task<ValuesSheetResponse>> m_FetchValuesEvent;
         private Func<GoogleSheetGetRequest, Task<DataSheetResponse>> m_FetchDataEvent;
         private Func<GoogleSheetPostRequest, Task> m_PostDataEvent;
+        private Func<GoogleSheetSortRequest, Task> m_SortRangeEvent;
 
         public string Id => m_Sheet.SpreadsheetId;
         public string Title => m_Sheet.Properties.Title;
@@ -18,12 +19,14 @@ namespace NerdvanaCrawler.Code.GoogleApis
             Spreadsheet sheet, 
             Func<GoogleSheetGetRequest, Task<ValuesSheetResponse>> fetchValuesEvent,
             Func<GoogleSheetGetRequest, Task<DataSheetResponse>> fetchDataEvent,
-            Func<GoogleSheetPostRequest, Task> postDataEvent)
+            Func<GoogleSheetPostRequest, Task> postDataEvent,
+            Func<GoogleSheetSortRequest, Task> sortRangeEvent)
         {
             m_Sheet = sheet;
             m_FetchValuesEvent = fetchValuesEvent;
             m_FetchDataEvent = fetchDataEvent;
             m_PostDataEvent = postDataEvent;
+            m_SortRangeEvent = sortRangeEvent;
 
             Subsheets = m_Sheet.Sheets.Select(s => s.Properties.Title).ToArray();
         }
@@ -70,6 +73,16 @@ namespace NerdvanaCrawler.Code.GoogleApis
                 await m_PostDataEvent.Invoke(CreatePostRequest(subsheet, range, data));
             else
                 this.LogError($"There's not subsheet with Title={subsheetName}.");
+        }
+
+        public async Task SortRange(string subsheetName, GoogleSheetRange range, int sortColumn, bool ascending)
+        {
+            var subsheet = m_Sheet.Sheets.FirstOrDefault(s => s.Properties.Title == subsheetName);
+
+            if (subsheet != default)
+                await m_SortRangeEvent.Invoke(new GoogleSheetSortRequest(Id, subsheet.Properties.SheetId.GetValueOrDefault(), subsheet.Properties.Title, range, sortColumn, ascending));
+            else
+                this.LogError($"There's no subsheet with Title={subsheetName}.");
         }
 
         private GoogleSheetGetRequest CreateGetRequest(Sheet subsheet, GoogleSheetRange range) =>

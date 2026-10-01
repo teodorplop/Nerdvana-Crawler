@@ -112,6 +112,25 @@ namespace NerdvanaCrawler.Code.Nerdvana
             await m_GoogleSheet.UpdateData(data, homework.Name, GoogleSheetRange.Range(firstRow, firstColumn, lastRow - firstRow + 1, lastColumn - firstColumn + 1));
         }
 
+        // Sorts the students (entire rows) by the Total of the first task group, highest score first.
+        public async Task SortHomework(NerdvanaHomework homework)
+        {
+            if (homework.Students.Count == 0 || homework.TaskGroups.Count == 0)
+                return;
+
+            var totalColumnIndex = homework.TaskGroups[0].SheetTotalColumnIndex;
+            if (totalColumnIndex < 0)
+            {
+                this.LogError($"Failed to sort homework={homework.Name}: first task group has no total column.");
+                return;
+            }
+
+            int firstRow = homework.Students.Min(s => s.SheetRowIndex);
+            int lastRow = homework.Students.Max(s => s.SheetRowIndex);
+
+            await m_GoogleSheet.SortRange(homework.Name, GoogleSheetRange.Rows(firstRow, lastRow - firstRow + 1), totalColumnIndex, false);
+        }
+
         public async Task UpdateHomeworkOverall()
         {
             if (HomeworkOveralls == null)

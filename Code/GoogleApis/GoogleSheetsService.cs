@@ -36,7 +36,7 @@ namespace NerdvanaCrawler.Code.GoogleApis
         {
             var getRequest = m_SheetsService.Spreadsheets.Get(id);
             var sheet = await PerformGoogleSheetRequest(getRequest, $"Loading sheet with id={id}");
-            return sheet != null ? new GoogleSheet(sheet, LoadValues, LoadData, SetData) : NullGoogleSheet.Instance;
+            return sheet != null ? new GoogleSheet(sheet, LoadValues, LoadData, SetData, SortRange) : NullGoogleSheet.Instance;
         }
 
         private async Task<ValuesSheetResponse> LoadValues(GoogleSheetGetRequest request)
@@ -77,6 +77,36 @@ namespace NerdvanaCrawler.Code.GoogleApis
             var batchUpdateRequest = new BatchUpdateSpreadsheetRequest() { Requests = new List<Request>() { updateRequest } };
 
             await PerformGoogleSheetRequest(m_SheetsService.Spreadsheets.BatchUpdate(batchUpdateRequest, request.SpreadsheetId), $"Writing values from request={request}");
+        }
+
+        private async Task SortRange(GoogleSheetSortRequest request)
+        {
+            // Negative bounds mean the range is unbounded in that dimension (e.g. entire rows).
+            var sortRequest = new Request()
+            {
+                SortRange = new SortRangeRequest()
+                {
+                    Range = new GridRange()
+                    {
+                        SheetId = request.SubsheetId,
+                        StartRowIndex = request.Range.FirstRow >= 0 ? request.Range.FirstRow : null,
+                        EndRowIndex = request.Range.NoRows >= 0 ? request.Range.FirstRow + request.Range.NoRows : null,
+                        StartColumnIndex = request.Range.FirstColumn >= 0 ? request.Range.FirstColumn : null,
+                        EndColumnIndex = request.Range.NoColumns >= 0 ? request.Range.FirstColumn + request.Range.NoColumns : null
+                    },
+                    SortSpecs = new List<SortSpec>()
+                    {
+                        new SortSpec()
+                        {
+                            DimensionIndex = request.SortColumn,
+                            SortOrder = request.Ascending ? "ASCENDING" : "DESCENDING"
+                        }
+                    }
+                }
+            };
+            var batchUpdateRequest = new BatchUpdateSpreadsheetRequest() { Requests = new List<Request>() { sortRequest } };
+
+            await PerformGoogleSheetRequest(m_SheetsService.Spreadsheets.BatchUpdate(batchUpdateRequest, request.SpreadsheetId), $"Sorting range from request={request}");
         }
 
         private async Task<TData> PerformGoogleSheetRequest<TData>(SheetsBaseServiceRequest<TData> request, string message)

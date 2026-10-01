@@ -59,6 +59,7 @@ namespace NerdvanaCrawler
 
             var evaluation = await Evaluate(chosenStudents, chosenTaskGroups);
             await nerdvanaSheet.UpdateHomework(chosenHomework, evaluation);
+            await nerdvanaSheet.SortHomework(chosenHomework);
 
             await nerdvanaSheet.UpdateHomeworkOverall();
         }
