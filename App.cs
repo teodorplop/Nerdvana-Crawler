@@ -22,15 +22,15 @@ namespace NerdvanaCrawler
             m_NetworkClient = CreateNetworkClient();
             m_NerdvanaCrawler = CreateNerdvanaCrawler();
             m_GoogleSheetsService = CreateGoogleSheetsService();
-            m_Sheets = await GetSheets();
 
-            await RunFlow(args);
+            var arguments = new Arguments(args);
+            m_Sheets = await GetSheets(arguments);
+
+            await RunFlow(arguments);
         }
 
-        private async Task RunFlow(string[] args)
+        private async Task RunFlow(Arguments arguments)
         {
-            var arguments = new Arguments(args);
-            
             var menuStack = new ConsoleMenuStack();
 
             // Choose which sheet to work on
@@ -82,9 +82,18 @@ namespace NerdvanaCrawler
             return responses;
         }
 
-        private async Task<IGoogleSheet[]> GetSheets()
+        private async Task<IGoogleSheet[]> GetSheets(Arguments arguments)
         {
             var sheetsIds = NerdvanaSheetsCollectionConfig.Instance.Sheets;
+
+            // A sheet id passed via arguments doesn't need to be part of the config
+            if (!string.IsNullOrEmpty(arguments.SheetId) && !sheetsIds.Contains(arguments.SheetId))
+            {
+                var argumentSheet = await m_GoogleSheetsService.GetSheet(arguments.SheetId);
+                if (argumentSheet != NullGoogleSheet.Instance)
+                    return [argumentSheet];
+            }
+
             var sheets = new IGoogleSheet[sheetsIds.Length];
             for (int i = 0; i < sheetsIds.Length; ++i)
                 sheets[i] = await m_GoogleSheetsService.GetSheet(sheetsIds[i]);
