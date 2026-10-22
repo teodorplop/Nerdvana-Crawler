@@ -17,6 +17,18 @@ This app can be used to evaluate algorithmic tasks from different platforms and 
 
 ## Usage
 
+### Google setup
+
+The app accesses spreadsheets through a Google service account (a bot account). You need your own:
+
+1. Open the [Google Cloud Console](https://console.cloud.google.com/) and create a project, or select an existing one.
+2. Go to APIs & Services → Library, search for **Google Sheets API** and click **Enable**.
+3. Go to IAM & Admin → Service Accounts and click **Create service account**. Give it a name. It doesn't need any roles.
+4. Open the new service account, go to the **Keys** tab and click Add key → Create new key → **JSON**. A key file downloads.
+5. Open the key file and copy the `client_email` value, for example `my-bot@my-project.iam.gserviceaccount.com`. This is the bot account you share spreadsheets with.
+
+The key file gives access to every spreadsheet shared with the bot account. Keep it private and never commit it. If it leaks, delete it in the **Keys** tab and create a new one.
+
 ### Spreadsheet template
 
 You can use this template for a quick start: [Nerdvana Crawler Template](https://docs.google.com/spreadsheets/d/1a1UavYkm0a-YGmpNm3JAvYMCHEUonKpNnOTp2qo2sNw/edit?usp=sharing).
@@ -27,7 +39,7 @@ Your spreadsheet should follow a few rules. If you want to change the rules, you
 
 #### 1. Share spreadsheet
 
-The spreadsheet should be shared with `nerdvanabot@nerdvanacrawler.iam.gserviceaccount.com` account, and permissions should be set to Editor:
+The spreadsheet should be shared with your bot account (the `client_email` from your key file, see [Google setup](#google-setup)), and permissions should be set to Editor. For example:
 
 ![image](https://github.com/teodorplop/Nerdvana-Crawler/assets/6988474/8c7d286e-6a6f-450d-bb5e-83b2bca00416)
 
@@ -74,7 +86,7 @@ For example, if you have a homework group named `Mandatory` which you used in mu
 ### Requirements
 
 * [.NET 9 SDK](https://dotnet.microsoft.com/download)
-* A JSON key for the Google service account that the spreadsheets are shared with. Keep the key file outside the repository and never commit it.
+* Your service account JSON key, see [Google setup](#google-setup). Keep the key file outside the repository.
 
 ### Credentials
 
@@ -128,6 +140,15 @@ The spreadsheet ID is the part of the URL between `/d/` and `/edit`.
 3. In the copy, change `name`, the `cron` schedule and the `SHEET_ID` secret it passes to `homework_eval.yml`.
 
 Cron schedules use UTC. For example, `'00 12 * * 3'` runs every Wednesday at 12:00 UTC.
+
+### Using a fork
+
+Secrets are not copied to forks. To run the workflows from your fork:
+
+1. Complete the [Google setup](#google-setup) and share your spreadsheets with your bot account.
+2. Add your own secrets to the fork, as described in [Secrets](#secrets).
+3. Adjust the class workflows to your own classes, secrets and schedules.
+4. Open the fork's Actions tab and enable workflows. GitHub disables them in new forks, including scheduled ones.
 
 ### Running manually
 
