@@ -1,4 +1,4 @@
-﻿name: Weekly Homework Eval - Clasa a 10-a - 2026-2027
+name: Weekly Homework Eval - Clasa a 10-a - 2026-2027
 
 on:
   workflow_dispatch:
@@ -22,33 +22,18 @@ on:
         type: string
         required: true
         default: 'all'
-  
+
   schedule:
     - cron: '00 12 * * 3'
 
 jobs:
-  build_and_run:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository code
-        uses: actions/checkout@v4
-
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Build the C# project
-        run: dotnet build --configuration Release
-
-      - name: Run the compiled application with arguments
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-          SHEET_ID: ${{ github.event.inputs.sheet || secrets.SHEET_ID_CLASA10_2026_2027 }}
-        run: |
-          HOMEWORK="${{ github.event.inputs.homework || 'last' }}"
-          TASKGROUP="${{ github.event.inputs.taskgroup || 'all' }}"
-          STUDENT="${{ github.event.inputs.student || 'all' }}"
-          
-          dotnet run --project NerdvanaCrawler.csproj -- -homework "$HOMEWORK" -taskgroup "$TASKGROUP" -student "$STUDENT"
+  eval:
+    uses: ./.github/workflows/homework_eval.yml
+    with:
+      sheet: ${{ inputs.sheet }}
+      homework: ${{ inputs.homework }}
+      taskgroup: ${{ inputs.taskgroup }}
+      student: ${{ inputs.student }}
+    secrets:
+      GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      SHEET_ID: ${{ secrets.SHEET_ID_CLASA10_2026_2027 }}

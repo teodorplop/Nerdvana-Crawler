@@ -1,0 +1,52 @@
+name: Homework Eval (shared)
+
+on:
+  workflow_call:
+    inputs:
+      sheet:
+        description: 'Sheet ID override (empty = SHEET_ID secret)'
+        type: string
+        required: false
+        default: ''
+      homework:
+        type: string
+        required: false
+        default: 'last'
+      taskgroup:
+        type: string
+        required: false
+        default: 'all'
+      student:
+        type: string
+        required: false
+        default: 'all'
+    secrets:
+      GOOGLE_CREDENTIALS:
+        required: true
+      SHEET_ID:
+        required: true
+
+jobs:
+  build_and_run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build the C# project
+        run: dotnet build --configuration Release
+
+      - name: Run the compiled application with arguments
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          SHEET_ID: ${{ inputs.sheet || secrets.SHEET_ID }}
+          HOMEWORK: ${{ inputs.homework || 'last' }}
+          TASKGROUP: ${{ inputs.taskgroup || 'all' }}
+          STUDENT: ${{ inputs.student || 'all' }}
+        run: dotnet run --project NerdvanaCrawler.csproj -- -homework "$HOMEWORK" -taskgroup "$TASKGROUP" -student "$STUDENT"
