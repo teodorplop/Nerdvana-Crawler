@@ -141,3 +141,6 @@ ehthumbs.db
 # Folder config file
 Desktop.ini
 .editorconfig
+
+# Secrets
+Resources/credentials.json

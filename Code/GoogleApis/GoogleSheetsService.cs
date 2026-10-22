@@ -13,7 +13,9 @@ namespace NerdvanaCrawler.Code.GoogleApis
 
         public GoogleSheetsService(GoogleApiConfig apiConfig)
         {
-            var credential = GoogleCredential.FromFile(apiConfig.CredentialFilePath);
+            var credential = string.IsNullOrEmpty(apiConfig.CredentialJson)
+                ? GoogleCredential.FromFile(apiConfig.CredentialFilePath)
+                : GoogleCredential.FromJson(apiConfig.CredentialJson);
             var initializer = new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,

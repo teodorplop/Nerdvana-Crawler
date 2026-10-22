@@ -110,6 +110,7 @@ namespace NerdvanaCrawler
             var googleApiConfig = new GoogleApiConfig()
             {
                 ApplicationName = AppInfo.Name,
+                CredentialJson = Environment.GetEnvironmentVariable("GOOGLE_CREDENTIALS"),
                 CredentialFilePath = "Resources/credentials.json"
             };
             return new GoogleSheetsService(googleApiConfig);

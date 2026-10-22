@@ -44,6 +44,8 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Run the compiled application with arguments
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         run: |
           SHEET="${{ github.event.inputs.sheet || '1hlZ1XwmkU3X7EHZ_rU_6bHD9-zEGWXi7Jt-goEIlFto' }}"
           HOMEWORK="${{ github.event.inputs.homework || 'last' }}"
