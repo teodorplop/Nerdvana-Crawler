@@ -5,6 +5,8 @@ using NerdvanaCrawler.Code.Nerdvana;
 using NerdvanaCrawler.Code.Nerdvana.Homework;
 using NerdvanaCrawler.Code.Nerdvana.UI;
 using NerdvanaCrawler.Code.Network;
+using NerdvanaCrawler.Code.Utils;
+using System.Text.RegularExpressions;
 
 namespace NerdvanaCrawler
 {
@@ -13,7 +15,6 @@ namespace NerdvanaCrawler
         private INetworkClient m_NetworkClient;
         private NerdvanaCrawlerRequestDispatcher m_NerdvanaCrawler;
         private GoogleSheetsService m_GoogleSheetsService;
-        private IGoogleSheet[] m_Sheets;
 
         private static Task Main(string[] args) => new App().Run(args);
 
@@ -24,22 +25,22 @@ namespace NerdvanaCrawler
             m_GoogleSheetsService = CreateGoogleSheetsService();
 
             var arguments = new Arguments(args);
-            m_Sheets = await GetSheets(arguments);
+            var sheet = await GetSheet(arguments);
+            if (sheet == NullGoogleSheet.Instance)
+            {
+                this.LogError("Failed to load sheet. Make sure it exists and is shared with the service account as Editor.");
+                return;
+            }
 
-            await RunFlow(arguments);
+            await RunFlow(sheet, arguments);
         }
 
-        private async Task RunFlow(Arguments arguments)
+        private async Task RunFlow(IGoogleSheet sheet, Arguments arguments)
         {
             var menuStack = new ConsoleMenuStack();
 
-            // Choose which sheet to work on
-            var chooseSheetMenu = new ChooseSheetMenu(m_Sheets, arguments);
-            menuStack.Push(chooseSheetMenu);
-            var chosenSheet = await chooseSheetMenu.WaitForSelection();
-
             // Prepare sheet
-            var nerdvanaSheet = new NerdvanaGoogleSheet(chosenSheet);
+            var nerdvanaSheet = new NerdvanaGoogleSheet(sheet);
 
             // Choose which homework to evaluate
             var chooseHomeworkMenu = new ChooseHomeworkMenu(nerdvanaSheet.Homeworks, arguments);
@@ -82,23 +83,30 @@ namespace NerdvanaCrawler
             return responses;
         }
 
-        private async Task<IGoogleSheet[]> GetSheets(Arguments arguments)
+        private async Task<IGoogleSheet> GetSheet(Arguments arguments)
         {
-            var sheetsIds = NerdvanaSheetsCollectionConfig.Instance.Sheets;
+            // Sheet id priority: -sheet argument, SHEET_ID environment variable, console input
+            var sheetId = arguments.SheetId;
+            if (string.IsNullOrEmpty(sheetId))
+                sheetId = Environment.GetEnvironmentVariable("SHEET_ID");
 
-            // A sheet id passed via arguments doesn't need to be part of the config
-            if (!string.IsNullOrEmpty(arguments.SheetId) && !sheetsIds.Contains(arguments.SheetId))
+            if (string.IsNullOrEmpty(sheetId))
             {
-                var argumentSheet = await m_GoogleSheetsService.GetSheet(arguments.SheetId);
-                if (argumentSheet != NullGoogleSheet.Instance)
-                    return [argumentSheet];
+                Console.Write("Enter sheet id or URL: ");
+                sheetId = Console.ReadLine();
             }
 
-            var sheets = new IGoogleSheet[sheetsIds.Length];
-            for (int i = 0; i < sheetsIds.Length; ++i)
-                sheets[i] = await m_GoogleSheetsService.GetSheet(sheetsIds[i]);
+            if (string.IsNullOrWhiteSpace(sheetId))
+                return NullGoogleSheet.Instance;
 
-            return sheets;
+            return await m_GoogleSheetsService.GetSheet(ParseSheetId(sheetId.Trim()));
+        }
+
+        // Accepts either a raw sheet id or a full URL like https://docs.google.com/spreadsheets/d/<id>/edit
+        private static string ParseSheetId(string sheetIdOrUrl)
+        {
+            var match = Regex.Match(sheetIdOrUrl, @"/spreadsheets/d/([a-zA-Z0-9_-]+)");
+            return match.Success ? match.Groups[1].Value : sheetIdOrUrl;
         }
 
         private NerdvanaCrawlerRequestDispatcher CreateNerdvanaCrawler() => new NerdvanaCrawlerRequestDispatcher(m_NetworkClient);

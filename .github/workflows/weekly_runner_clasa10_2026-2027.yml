@@ -4,10 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       sheet:
-        description: 'Sheet ID'
+        description: 'Sheet ID (empty = class default)'
         type: string
-        required: true
-        default: '1nIxkE2VYuQOSBIf9ZZF7KMTmayrBRhbeWFHr4OjxBNQ'
+        required: false
       homework:
         description: 'Homework'
         type: string
@@ -46,10 +45,10 @@ jobs:
       - name: Run the compiled application with arguments
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          SHEET_ID: ${{ github.event.inputs.sheet || secrets.SHEET_ID_CLASA10_2026_2027 }}
         run: |
-          SHEET="${{ github.event.inputs.sheet || '1nIxkE2VYuQOSBIf9ZZF7KMTmayrBRhbeWFHr4OjxBNQ' }}"
           HOMEWORK="${{ github.event.inputs.homework || 'last' }}"
           TASKGROUP="${{ github.event.inputs.taskgroup || 'all' }}"
           STUDENT="${{ github.event.inputs.student || 'all' }}"
           
-          dotnet run --project NerdvanaCrawler.csproj -- -sheet "$SHEET" -homework "$HOMEWORK" -taskgroup "$TASKGROUP" -student "$STUDENT"
+          dotnet run --project NerdvanaCrawler.csproj -- -homework "$HOMEWORK" -taskgroup "$TASKGROUP" -student "$STUDENT"
